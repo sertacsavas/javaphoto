@@ -13,9 +13,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sertac.photo.model.User;
 
 public class UserPrincipal implements UserDetails {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5810475453113143098L;
+
 	private Long id;
 
 	private String username;
+
+	private String name;
 
 	@JsonIgnore
 	private String email;
@@ -25,10 +32,11 @@ public class UserPrincipal implements UserDetails {
 
 	private Collection<? extends GrantedAuthority> authorities;
 
-	public UserPrincipal(Long id, String username, String email, String password,
+	public UserPrincipal(Long id, String username, String name, String email, String password,
 			Collection<? extends GrantedAuthority> authorities) {
 		this.id = id;
 		this.username = username;
+		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.authorities = authorities;
@@ -38,7 +46,8 @@ public class UserPrincipal implements UserDetails {
 		List<GrantedAuthority> authorities = user.getRoles().stream()
 				.map(role -> new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList());
 
-		return new UserPrincipal(user.getId(), user.getUsername(), user.getEmail(), user.getPassword(), authorities);
+		return new UserPrincipal(user.getId(), user.getUsername(), user.getName(), user.getEmail(), user.getPassword(),
+				authorities);
 	}
 
 	public Long getId() {
@@ -92,6 +101,14 @@ public class UserPrincipal implements UserDetails {
 			return false;
 		UserPrincipal that = (UserPrincipal) o;
 		return Objects.equals(id, that.id);
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Override
