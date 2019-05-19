@@ -11,6 +11,10 @@ public class UserSummary {
 		this.name = name;
 	}
 
+	public UserSummary() {
+
+	}
+
 	public Long getId() {
 		return id;
 	}
