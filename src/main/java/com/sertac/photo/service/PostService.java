@@ -27,6 +27,11 @@ public class PostService {
 		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "id");
 		Page<Post> postList = postRepository.findByUserId(userId, pageable);
 
+		userPosts.setTotalElements(postList.getTotalElements());
+		userPosts.setTotalPages(postList.getTotalPages());
+		userPosts.setNumberOfElements(postList.getNumberOfElements());
+		userPosts.setNumber(postList.getNumber());
+
 		List<PostResponse> postResponse = postList.map(post -> {
 			return ModelMapper.mapPostToPollResponse(post);
 		}).getContent();
