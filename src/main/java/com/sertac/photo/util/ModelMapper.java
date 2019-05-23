@@ -15,8 +15,9 @@ public class ModelMapper {
 		return postResponse;
 	}
 
-	public static UserSummary mapUserToUserSummary(User user) {
-		UserSummary userSummary = new UserSummary(user.getId(), user.getUsername(), user.getName());
+	public static UserSummary mapUserToUserSummary(User user, long followerCount, long followedCount) {
+		UserSummary userSummary = new UserSummary(user.getId(), user.getUsername(), user.getName(), followerCount,
+				followedCount);
 		return userSummary;
 	}
 
