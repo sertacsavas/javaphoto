@@ -42,7 +42,7 @@ public class PostService {
 			return ModelMapper.mapPostToPollResponse(post, post.getUser());
 		}).getContent();
 
-		// check in
+		// check in..
 
 		userPosts.setPostList(postResponse);
 
