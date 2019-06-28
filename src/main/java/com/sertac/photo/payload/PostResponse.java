@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class PostResponse implements Serializable {
 
 	private Long id;
-	private UserSummary user;
+	private UserSummary userSummary;
 	private String url;
 
 	public Long getId() {
@@ -16,12 +16,12 @@ public class PostResponse implements Serializable {
 		this.id = id;
 	}
 
-	public UserSummary getUser() {
-		return user;
+	public UserSummary getUserSummary() {
+		return userSummary;
 	}
 
-	public void setUser(UserSummary user) {
-		this.user = user;
+	public void setUserSummary(UserSummary userSummary) {
+		this.userSummary = userSummary;
 	}
 
 	public String getUrl() {

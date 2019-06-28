@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sertac.photo.payload.ProfileSummary;
 import com.sertac.photo.payload.UserIdentityAvailability;
 import com.sertac.photo.payload.UserSummary;
 import com.sertac.photo.repository.UserRepository;
@@ -31,8 +32,8 @@ public class UserController {
 	@GetMapping("/user/me")
 	@PreAuthorize("hasRole('USER')")
 	public UserSummary getCurrentUser(@CurrentUser UserPrincipal currentUser) {
-		UserSummary userSummary = new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getName(),
-				null, null);
+		UserSummary userSummary = new UserSummary(currentUser.getId(), currentUser.getUsername(),
+				currentUser.getName());
 		return userSummary;
 	}
 
@@ -48,9 +49,9 @@ public class UserController {
 		return new UserIdentityAvailability(isAvailable);
 	}
 
-	@GetMapping("/user/getUserByUserName/{username}")
-	public UserSummary getUserByUserName(@PathVariable String username) {
-		return userService.getUserByUserName(username);
+	@GetMapping("/user/getProfileByUserName/{username}")
+	public ProfileSummary getProfileByUserName(@CurrentUser UserPrincipal currentUser, @PathVariable String username) {
+		return userService.getProfileByUserName(currentUser, username);
 	}
 
 }

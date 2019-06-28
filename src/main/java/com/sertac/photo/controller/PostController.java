@@ -27,4 +27,11 @@ public class PostController {
 
 		return postService.getPosts(currentUser, userId, page, size);
 	}
+
+	@GetMapping("/getFeed")
+	public UserPosts getFeed(@CurrentUser UserPrincipal currentUser,
+			@RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
+			@RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
+		return postService.getFeed(currentUser, page, size);
+	}
 }

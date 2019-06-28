@@ -6,9 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sertac.photo.model.User;
-import com.sertac.photo.payload.UserSummary;
+import com.sertac.photo.payload.ProfileSummary;
 import com.sertac.photo.repository.FollowRepository;
 import com.sertac.photo.repository.UserRepository;
+import com.sertac.photo.security.UserPrincipal;
 import com.sertac.photo.util.ModelMapper;
 
 @Service
@@ -19,11 +20,16 @@ public class UserService {
 	@Autowired
 	private FollowRepository followRepository;
 
-	public UserSummary getUserByUserName(String username) {
+	public ProfileSummary getProfileByUserName(UserPrincipal currentUser, String username) {
 		Optional<User> user = userRepository.findByUsername(username);
 
-		return user.isPresent() ? ModelMapper.mapUserToUserSummary(user.get(),
+		return user.isPresent() ? ModelMapper.mapUserToProfileSummary(user.get(),
 				followRepository.followerCountByUserId(user.get().getId()),
-				followRepository.followedCountByUserId(user.get().getId())) : new UserSummary();
+				followRepository.followedCountByUserId(user.get().getId()),
+				currentUser != null
+						? followRepository.getValidFollowRecord(currentUser.getId(), user.get().getId()).isPresent()
+						: false)
+				: new ProfileSummary();
 	}
 }
+//commit
