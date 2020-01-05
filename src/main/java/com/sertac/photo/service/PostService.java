@@ -28,6 +28,7 @@ public class PostService {
 	FollowRepository followRepository;
 
 	public UserPosts getPosts(UserPrincipal currentUser, Long userId, int page, int size) {
+
 		UserPosts userPosts = new UserPosts();
 
 		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "id");
