@@ -27,6 +27,9 @@ public class PostService {
 	@Autowired
 	FollowRepository followRepository;
 
+	@Autowired
+	LikeService likeService;
+
 	public UserPosts getPosts(UserPrincipal currentUser, Long userId, int page, int size) {
 
 		UserPosts userPosts = new UserPosts();
@@ -68,11 +71,16 @@ public class PostService {
 		userPosts.setNumberOfElements(postList.getNumberOfElements());
 		userPosts.setNumber(postList.getNumber());
 
-		List<PostResponse> postResponse = postList.map(post -> {
+		List<PostResponse> postResponseList = postList.map(post -> {
 			return ModelMapper.mapPostToPollResponse(post, post.getUser());
 		}).getContent();
 
-		userPosts.setPostList(postResponse);
+		for (PostResponse postResponse : postResponseList) {
+			postResponse.setViewerHasLiked(likeService.viewerHasLiked(currentUser, postResponse.getId()));
+			postResponse.setLikeCount(likeService.getLikeCount(postResponse.getId()));
+		}
+
+		userPosts.setPostList(postResponseList);
 
 		return userPosts;
 	}

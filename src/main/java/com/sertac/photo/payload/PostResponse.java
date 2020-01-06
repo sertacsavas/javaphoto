@@ -7,6 +7,8 @@ public class PostResponse implements Serializable {
 	private Long id;
 	private UserSummary userSummary;
 	private String url;
+	private boolean viewerHasLiked;
+	private Long likeCount;
 
 	public Long getId() {
 		return id;
@@ -30,6 +32,22 @@ public class PostResponse implements Serializable {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public boolean isViewerHasLiked() {
+		return viewerHasLiked;
+	}
+
+	public void setViewerHasLiked(boolean viewerHasLiked) {
+		this.viewerHasLiked = viewerHasLiked;
+	}
+
+	public Long getLikeCount() {
+		return likeCount;
+	}
+
+	public void setLikeCount(Long likeCount) {
+		this.likeCount = likeCount;
 	}
 
 	/**
