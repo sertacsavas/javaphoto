@@ -57,7 +57,7 @@ public class LikeService {
 		handleLike(currentUser.getId(), id, true);
 	}
 
-	public void unLike(UserPrincipal currentUser, Long id) {
-		handleLike(currentUser.getId(), id, false);
+	public void unLike(Long userId, Long id) {
+		handleLike(userId, id, false);
 	}
 }

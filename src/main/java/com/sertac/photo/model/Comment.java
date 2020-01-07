@@ -4,13 +4,13 @@ import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 
-public class Like {
+public class Comment {
 	@Id
 	private String id;
 
 	private Long postId;
 	private Long userId;
-	private boolean isActive;
+	private String comment;
 	private Date date;
 
 	public String getId() {
@@ -21,6 +21,14 @@ public class Like {
 		this.id = id;
 	}
 
+	public Long getPostId() {
+		return postId;
+	}
+
+	public void setPostId(Long postId) {
+		this.postId = postId;
+	}
+
 	public Long getUserId() {
 		return userId;
 	}
@@ -29,12 +37,12 @@ public class Like {
 		this.userId = userId;
 	}
 
-	public boolean isActive() {
-		return isActive;
+	public String getComment() {
+		return comment;
 	}
 
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 	public Date getDate() {
@@ -43,14 +51,6 @@ public class Like {
 
 	public void setDate(Date date) {
 		this.date = date;
-	}
-
-	public Long getPostId() {
-		return postId;
-	}
-
-	public void setPostId(Long postId) {
-		this.postId = postId;
 	}
 
 }

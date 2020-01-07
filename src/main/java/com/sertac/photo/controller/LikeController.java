@@ -18,14 +18,12 @@ public class LikeController {
 	LikeService likeService;
 
 	@GetMapping("/like/{id}")
-	public boolean like(@CurrentUser UserPrincipal currentUser, @PathVariable Long id) {
+	public void like(@CurrentUser UserPrincipal currentUser, @PathVariable Long id) {
 		likeService.like(currentUser, id);
-		return true;
 	}
 
 	@GetMapping("/unLike/{id}")
-	public boolean unLike(@CurrentUser UserPrincipal currentUser, @PathVariable Long id) {
-		likeService.unLike(currentUser, id);
-		return true;
+	public void unLike(@CurrentUser UserPrincipal currentUser, @PathVariable Long id) {
+		likeService.unLike(currentUser.getId(), id);
 	}
 }
