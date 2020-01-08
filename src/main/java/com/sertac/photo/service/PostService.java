@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.sertac.photo.model.Follow;
 import com.sertac.photo.model.Post;
+import com.sertac.photo.model.User;
 import com.sertac.photo.payload.PostResponse;
 import com.sertac.photo.payload.UserPosts;
 import com.sertac.photo.repository.FollowRepository;
@@ -62,6 +63,7 @@ public class PostService {
 		for (Follow followed : followedList) {
 			followedListLong.add(followed.getFollowedUser().getId());
 		}
+		followedListLong.add(currentUser.getId());
 
 		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "id");
 		Page<Post> postList = postRepository.findByUserIdIn(followedListLong, pageable);
@@ -83,5 +85,15 @@ public class PostService {
 		userPosts.setPostList(postResponseList);
 
 		return userPosts;
+	}
+
+	public void savePost(Long id, String mediaUrl) {
+		Post post = new Post();
+		User user = new User();
+		user.setId(id);
+		post.setUrl(mediaUrl);
+		post.setUser(user);
+		postRepository.save(post);
+
 	}
 }
