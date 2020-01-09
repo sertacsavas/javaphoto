@@ -39,7 +39,7 @@ public class LikeService {
 
 		Like currentLike = findLike(userId, postId);
 		like.setId(currentLike != null ? currentLike.getId() : null);
-//
+/////
 		like.setDate(new Date());
 		likeRepository.save(like);
 	}
