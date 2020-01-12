@@ -10,9 +10,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.sertac.photo.model.Comment;
 import com.sertac.photo.model.Follow;
+import com.sertac.photo.model.LikeCount;
 import com.sertac.photo.model.Post;
 import com.sertac.photo.model.User;
+import com.sertac.photo.model.ViewerLike;
 import com.sertac.photo.payload.PostResponse;
 import com.sertac.photo.payload.UserPosts;
 import com.sertac.photo.repository.FollowRepository;
@@ -30,6 +33,9 @@ public class PostService {
 
 	@Autowired
 	LikeService likeService;
+
+	@Autowired
+	CommentService commentService;
 
 	public UserPosts getPosts(UserPrincipal currentUser, Long userId, int page, int size) {
 
@@ -77,9 +83,36 @@ public class PostService {
 			return ModelMapper.mapPostToPollResponse(post, post.getUser());
 		}).getContent();
 
+		List<Long> postIdList = new ArrayList<Long>();
 		for (PostResponse postResponse : postResponseList) {
-			postResponse.setViewerHasLiked(likeService.viewerHasLiked(currentUser, postResponse.getId()));
-			postResponse.setLikeCount(likeService.getLikeCount(postResponse.getId()));
+			postIdList.add(postResponse.getId());
+		}
+
+		List<LikeCount> likeCountList = likeService.getLikeCount(postIdList);
+		List<ViewerLike> viewerHasLikedList = likeService.viewerHasLikedList(postIdList, currentUser.getId());
+		List<Comment> coomentList = commentService.getCommentsByPostIdList(postIdList);
+
+		for (PostResponse postResponse : postResponseList) {
+			int indexOfCount = likeCountList.indexOf(new LikeCount(postResponse.getId()));
+			if (indexOfCount >= 0) {
+				postResponse.setLikeCount(likeCountList.get(indexOfCount).getTotal());
+			} else {
+				postResponse.setLikeCount(new Long(0));
+			}
+
+			int indexOfviewerLike = viewerHasLikedList.indexOf(new ViewerLike(postResponse.getId()));
+			if (indexOfviewerLike >= 0) {
+				postResponse.setViewerHasLiked(viewerHasLikedList.get(indexOfviewerLike).isActive());
+			}
+
+			postResponse.setCommentList(new ArrayList<Comment>());
+		}
+
+		for (Comment comment : coomentList) {
+			int indexOfPostResponse = postResponseList.indexOf(new PostResponse(comment.getPostId()));
+			if (indexOfPostResponse >= 0) {
+				postResponseList.get(indexOfPostResponse).getCommentList().add(comment);
+			}
 		}
 
 		userPosts.setPostList(postResponseList);
