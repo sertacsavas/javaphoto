@@ -8,12 +8,15 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "follow")
+@Table(name = "follow", indexes = { @Index(name = "x_follow_1", columnList = "follower_user_id"),
+		@Index(name = "x_follow_2", columnList = "followed_user_id") })
+
 public class Follow implements Serializable {
 
 	@Id

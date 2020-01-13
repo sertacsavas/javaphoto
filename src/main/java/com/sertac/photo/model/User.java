@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -39,12 +40,14 @@ public class User implements Serializable {
 
 	@NotBlank
 	@Size(max = 15)
+	@Column(unique = true)
 	private String username;
 
 	@NaturalId
 	@NotBlank
 	@Size(max = 40)
 	@Email
+	@Column(unique = true)
 	private String email;
 
 	@NotBlank
